@@ -1,0 +1,15 @@
+<h1>Senators</h1>
+<table>
+  <tr>
+    <td (click)="sortName(sortByName, sortByNameRev)">Name</td>
+    <td>Party</td>
+    <td>State</td>
+    <td>Age</td>
+  </tr>
+  <tr *ngFor="let senator of senators">
+    <td>{{senator.name}}</td>
+    <td>{{senator.party | abbrevToParty}}</td>
+    <td>{{senator.state | abbrevToState}}</td>
+    <td>{{senator.date_of_birth | dateToAge}}</td>
+  </tr>
+</table>

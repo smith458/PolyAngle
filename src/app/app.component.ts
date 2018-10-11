@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
-import { SENATORS } from './mock-senators';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'PolyScite';
-  senators = SENATORS.results[0].members;
+
+  constructor() {}
+
+  ngOnInit() {
+  }
 }
