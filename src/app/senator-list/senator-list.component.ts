@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { SENATORS } from '../mock-senators';
 import { SenatorsService } from '../senators.service';
 import { Senator } from '../senator';
+import { Sort } from '@angular/material';
+import { state } from '../../../node_modules/@angular/animations';
 
-type SortFunc = (a: Senator, b: Senator) => number;
+function compare(a, b, isAsc): number {
+  return (a < b ? 1 : -1) * (isAsc ? 1 : -1);
+}
 
 @Component({
   selector: 'app-senator-list',
@@ -23,32 +27,23 @@ export class SenatorListComponent implements OnInit {
     this.senatorService.getSenators().subscribe(s => this.senators = s.results[0].members);
   }
 
-  sortByName(a: Senator, b: Senator): number {
-    if (a.name < b.name) {
-      return -1;
+  sortData(sort: Sort): void {
+    console.log('sorting');
+    const data = this.senators.slice();
+    if (!sort.active || sort.direction === '') {
+      // this.senators = data;
+      return;
     }
-    if (a.name > b.name) {
-      return 1;
-    }
-    return 0;
-  }
 
-  sortByNameRev(a: Senator, b: Senator): number {
-    if (a.name < b.name) {
-      return 1;
-    }
-    if (a.name > b.name) {
-      return -1;
-    }
-    return 0;
-  }
-
-  sortName(func: SortFunc, revFunc: SortFunc): void {
-    const sortedSenators: Senator[] = this.senators.sort(func);
-    if (sortedSenators.toString() === this.senators.toString()) {
-      this.senators = sortedSenators.sort(revFunc);
-    } else {
-      this.senators = sortedSenators;
-    }
+    this.senators = data.sort((a: Senator, b: Senator): number => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'name': return compare(a.name, b.name, isAsc);
+        case 'party': return compare(a.name, b.name, isAsc);
+        case 'state': return compare(a.name, b.name, isAsc);
+        case 'age': return compare(a.name, b.name, isAsc);
+        default: return 0;
+      }
+    });
   }
 }

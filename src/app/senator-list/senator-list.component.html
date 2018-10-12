@@ -1,10 +1,10 @@
 <h1>Senators</h1>
-<table>
+<table matSort (matSortChange)="sortData($event)">
   <tr>
-    <td (click)="sortName(sortByName, sortByNameRev)">Name</td>
-    <td>Party</td>
-    <td>State</td>
-    <td>Age</td>
+    <th mat-sort-header='name'>Name</th>
+    <th mat-sort-header='party'>Party</th>
+    <th mat-sort-header='state'>State</th>
+    <th mat-sort-header='age'>Age</th>
   </tr>
   <tr *ngFor="let senator of senators">
     <td>{{senator.name}}</td>
