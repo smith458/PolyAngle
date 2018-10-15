@@ -4,6 +4,8 @@ import { AbbrevToPartyPipe } from './Pipes/abbrevToParty-transform';
 import { AbbrevToStatePipe } from './Pipes/abbrevToState-transform';
 import { DateToAgePipe } from './Pipes/dateToAge-transform';
 import { HttpClientModule } from '@angular/common/http';
+import { MatTableModule, MatSortModule } from '@angular/material';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { SenatorListComponent } from './senator-list/senator-list.component';
@@ -19,8 +21,11 @@ import { SenatorListComponent } from './senator-list/senator-list.component';
   imports: [
     BrowserModule,
     HttpClientModule,
+    MatTableModule,
+    MatSortModule,
+    NoopAnimationsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [DateToAgePipe],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

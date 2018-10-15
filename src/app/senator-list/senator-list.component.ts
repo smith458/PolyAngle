@@ -1,13 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SENATORS } from '../mock-senators';
 import { SenatorsService } from '../senators.service';
 import { Senator } from '../senator';
-import { Sort } from '@angular/material';
-import { state } from '../../../node_modules/@angular/animations';
-
-function compare(a, b, isAsc): number {
-  return (a < b ? 1 : -1) * (isAsc ? 1 : -1);
-}
+import { MatSort, MatTableDataSource, MatTable } from '@angular/material';
+import { ApiResponse } from '../apiResonse';
+import { DateToAgePipe } from '../Pipes/dateToAge-transform';
 
 @Component({
   selector: 'app-senator-list',
@@ -16,34 +13,34 @@ function compare(a, b, isAsc): number {
 })
 export class SenatorListComponent implements OnInit {
   senators: Senator[];
+  displayedColumns: string[] = ['first_name', 'last_name', 'party', 'state', 'age'];
+  dataSource: MatTableDataSource<Senator>;
+  constructor(private senatorService: SenatorsService, private dateToAge: DateToAgePipe) { }
 
-  constructor(private senatorService: SenatorsService) { }
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatTable) table: MatTable<any>;
 
   ngOnInit() {
+    // this.assignDataSource(SENATORS);
     this.getSenators();
   }
 
   getSenators(): void {
-    this.senatorService.getSenators().subscribe(s => this.senators = s.results[0].members);
+    this.senatorService.getSenators().subscribe(this.assignDataSource);
   }
 
-  sortData(sort: Sort): void {
-    console.log('sorting');
-    const data = this.senators.slice();
-    if (!sort.active || sort.direction === '') {
-      // this.senators = data;
-      return;
-    }
-
-    this.senators = data.sort((a: Senator, b: Senator): number => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'party': return compare(a.name, b.name, isAsc);
-        case 'state': return compare(a.name, b.name, isAsc);
-        case 'age': return compare(a.name, b.name, isAsc);
-        default: return 0;
+  assignDataSource(x: ApiResponse) {
+    console.log(x);
+    this.senators = x.results[0].members;
+    this.dataSource = new MatTableDataSource(this.senators);
+    this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (data: Senator, sortHeaderID: string) => {
+      if (sortHeaderID === 'age') {
+        return new DateToAgePipe().transform(data['date_of_birth']);
       }
-    });
+      return data[sortHeaderID];
+    };
+    console.log(this.table);
+    this.table.renderRows();
   }
 }
