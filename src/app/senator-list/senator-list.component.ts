@@ -17,21 +17,11 @@ export class SenatorListComponent implements OnInit {
   dataSource: MatTableDataSource<Senator>;
   constructor(private senatorService: SenatorsService, private dateToAge: DateToAgePipe) { }
 
+  @ViewChild(MatTable) table: MatTable<Senator>;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatTable) table: MatTable<any>;
 
-  ngOnInit() {
-    // this.assignDataSource(SENATORS);
-    this.getSenators();
-  }
-
-  getSenators(): void {
-    this.senatorService.getSenators().subscribe(this.assignDataSource);
-  }
-
-  assignDataSource(x: ApiResponse) {
-    console.log(x);
-    this.senators = x.results[0].members;
+  async ngOnInit() {
+    this.senators = await this.senatorService.getSenators();
     this.dataSource = new MatTableDataSource(this.senators);
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (data: Senator, sortHeaderID: string) => {
@@ -40,7 +30,5 @@ export class SenatorListComponent implements OnInit {
       }
       return data[sortHeaderID];
     };
-    console.log(this.table);
-    this.table.renderRows();
   }
 }
