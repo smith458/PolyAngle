@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, ConnectableObservable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, publish } from 'rxjs/operators';
 import { ApiResponse } from './apiResonse';
 import { Senator } from './senator';
 
@@ -25,7 +25,6 @@ export class SenatorsService {
   init(): void {
     this.response = this.http.get<ApiResponse>(endpoint, httpOptions) as ConnectableObservable<ApiResponse>;
     const senatorObserv = this.response.pipe(map(x => x.results[0].members));
-
     this.senators = senatorObserv.toPromise();
   }
 

@@ -1,0 +1,17 @@
+.photoHolder {
+  border: solid;
+  border-color: black;
+  border-width: 1px;
+  border-radius: 3px;
+  display: inline-block;
+  text-align: center;
+}
+
+.photoCaption {
+  font-size: .4em;
+  color: black;
+}
+
+.memberCard {
+  display: flex;
+}

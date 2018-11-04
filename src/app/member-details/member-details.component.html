@@ -1,0 +1,21 @@
+<div *ngIf="senator.id">
+    <h1>{{senator.name}}</h1>
+    <div class="memberCard">
+        <div class="photoHolder">
+            <img src="https://www.govtrack.us/data/photos/{{senator.govtrack_id}}-200px.jpeg" alt="{{senator.name}} Picture">
+            <p class="photoCaption">Image Courtesy of <a href="https://govtrack.us">GovTrack.us</a></p>
+        </div>
+        <table>
+          <tr>
+            <td>Website</td>
+          </tr>
+          <tr>
+            <td>Twitter</td>
+          </tr>
+          <tr>
+            <td>RSS</td>
+          </tr>
+        </table>
+    </div>
+</div>
+<button routerLink='/senators'>Back</button>
